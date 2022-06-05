@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Word Game</title>
+    <style>
+      html {
+         font-family: 'Helvetica', sans-serif;
+         font-size: 50px;
+      }
+
+      body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+
+      #picture {
+        width: 8rem;
+      }
+
+      #picture p {
+        font-size: 5rem;
+        text-align: center;
+        /*margin: 1rem;*/
+      }
+
+      #choices {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+
+      #choices a {
+        font-size: 1.5rem;
+        text-overflow: ellipsis;
+        text-decoration: none;
+        transition-duration: 0.2s;
+        color: #111;
+        white-space: nowrap;
+        background-color: #eee;
+        box-shadow: 0.1rem 0.1rem 0.1rem #666;
+        /*width: 8rem;*/
+        border-width: 0.05rem;
+        border-color: #1118;
+        border-style: solid;
+        border-radius: 0.4rem;
+        padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+      }
+
+      #choices a:hover {
+        background-color: #bbb;
+      }
+
+      #choices div {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="picture">
+      <p id="picture-p">📌</p>
+    </div>
+    <div id="choices">
+      <div class="choice"> 
+        <a class="choice-link" href='javascript:;'>Choice 1</a> 
+      </div>
+      <div class="choice">
+        <a class="choice-link" href='javascript:;'>Choice 2</a> 
+      </div>
+      <div class="choice">
+        <a class="choice-link" href='javascript:;'>Choice 3</a> 
+      </div>
+      <div class="choice">
+        <a class="choice-link" href='javascript:;'>Choice 4</a> 
+      </div>
+    </div>
+	<script>
+    class WordGame {
+      setup() {
+        console.log("Setup")
+        // TODO Some of this suff can be done once at construct.
+
+        // Find the elements we will need to change 
+        this.picture = document.getElementById("picture-p")
+        this.choice_links = document.getElementsByClassName("choice-link")
+
+        // Our complete wordlist. Each item is the emoji followed by the word.
+        this.words = [ "🍎Apple",
+                       "🐧Penguin",
+                       "🦉Owl",
+                       "🦆Duck",
+                       "🐟Fish",
+                       "🦀Crab",
+                       "🕷Spider",
+                       "🐌Snail",
+                       "🐙Octopus",
+                       "🐋Whale",
+                       "🦊Fox",
+                       "🐒Monkey",
+                       "🐈Cat",
+                       "🐅Tiger",
+                       "🐎Horse",
+                       "🦄Unicorn",
+                       "🦓Zebra",
+                       "🐄Cow",
+                       "🐖Pig",
+                       "🐑Sheep",
+                       "🐪Camel",
+                       "🦒Giraffe",
+                       "🐘Elephant",
+                       "🐁Mouse",
+                       "🐇Rabbit",
+                       "🦔Hedgehog",
+                       "🦇Bat",
+                       "🐻Bear",
+                       "🐼Panda",
+                       "🦘Kangaroo",
+                       "🦡Badger",
+                       "🐔Chicken",
+                       "🐦Bird",
+                       "🪶Feather",
+                       "🦩Flamingo",
+                       "🦚Peacock",
+                       "🐊Crocodile",
+                       "🐸Frog",
+                       "🦎Lizard",
+                       "🐉Dragon",
+                       "🦖T-Rex",
+                       "🐜Ant",
+                       "🐝Bee",
+                       "🐞Ladybird",
+                       "🪰Fly",
+                       "🪱Worm",
+                       "🌻Flower",
+                       "🌳Tree",
+                       "🌵Cactus",
+                       "🦑Squid",
+                       "🪨Rock",
+                       "☀️Sun",
+                       "☁️Cloud",
+                       "🌈Rainbow",
+                       "☂️Umbrella",
+                       "❄️Snow",
+                       "☃️Snowman",
+                       "🔥Fire",
+                       "🤖Robot",
+                       "💋Kiss",
+                       "🦶Foot",
+                       "👂Ear",
+                       "👃Nose",
+                       "👁️Eye",
+                       "🧚Fairy",
+                       "👓Glasses",
+                       "🧦Socks",
+                       "🥾Boot",
+                       "🎩Hat",
+                       "🍇Grapes",
+                       "🍋Lemon",
+                       "🍌Banana",
+                       "🍍Pineapple",
+                       "🍐Pear",
+                       "🍑Peach",
+                       "🍒Cherries",
+                       "🍓Strawberry",
+                       "🫐Blueberries",
+                       "🥝Kiwi Fruit",
+                       "🍅Tomato",
+                       "🥔Potato",
+                       "🥕Carrot",
+                       "🌽Corn",
+                       "🌶️Pepper",
+                       "🥒Cucumber",
+                       "🥦Broccoli",
+                       "🧅Onion",
+                       "🍄Mushroom",
+                       "🍞Bread",
+                       "🥞Pancakes",
+                       "🥓Bacon",
+                       "🍕Pizza",
+                       "🥪Sandwich",
+                       "🥚Egg",
+                       "🍿Popcorn",
+                       "🍝Spaghetti",
+                       "🍨Ice Cream",
+                       "🍩Doughnut",
+                       "🍼Baby Bottle",
+                       "🧊Ice"
+                        // TODO Add (many) more
+                       ]
+
+        // Pick four random items from the list
+        var selection = []
+        for (let i = 0; i < 4; i++) {
+          var index = Math.floor(Math.random()*this.words.length);
+          selection[i] = this.words.splice(index, 1)[0]
+        }
+
+        // We will show the emoji from the first one
+        var emoji = selection[0].substring(0,2)
+        this.picture.textContent = emoji
+        var right_word = selection[0].substring(2)
+
+        // Set up the buttons
+        for(let i=0 ; i<4 ; i++) {
+          // Assign the words to the buttons at random
+          var index = Math.floor(Math.random()*selection.length);
+          var word = selection.splice(index, 1)[0].substring(2)
+          this.choice_links[i].textContent = word
+
+          // If this is the right word, enable the link
+          if(word == right_word)
+          {
+            // Slightly hacky -- reload the page.
+            // (For some reason, setting the onlcick to this.setup only works first time.)
+            this.choice_links[i].href = ""
+          }
+          else
+          {
+            this.choice_links[i].onclick = null
+          }
+        }
+      }
+    }
+
+    // Entry point:
+    this.wg = new WordGame()
+    wg.setup()
+
+  </script>
+  </body>
+</html>
