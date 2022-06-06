@@ -46,18 +46,27 @@
         transition-duration: 0.2s;
         color: #111;
         white-space: nowrap;
-        background-color: #eee;
-        box-shadow: 0.1rem 0.1rem 0.1rem #666;
         border-width: 0.05rem;
-        border-color: #1118;
         border-style: solid;
         border-radius: 0.4rem;
         padding: 0.5rem 0.75rem 0.5rem 0.75rem;
       }
 
-      #choices a:hover {
-        background-color: #bbb;
+      .unchosen {
+        box-shadow: 0.1rem 0.1rem 0.2rem #666C;        
+        border-color: #1118;
       }
+      
+      .unchosen:hover {
+        background-color: #bbb;*/
+      }
+
+      .chosen {
+        background-color: #eec;          
+        box-shadow: 0.1rem 0.1rem 0.3rem #886;
+        border-color: #779;
+      }
+
     </style>
   </head>
   <body>
@@ -263,16 +272,32 @@
           // Assign the words to the buttons at random
           var index = Math.floor(Math.random()*selection.length);
           var word = selection.splice(index, 1)[0].substring(2)
-          wg.choice_links[i].textContent = word
+          var choice_link = wg.choice_links[i]
+          choice_link.textContent = word
+
+          // Ensure the link is "unchosen" and not "chosen" from a previous game
+          choice_link.classList.add("unchosen")
+          choice_link.classList.remove("chosen")
 
           // If this is the right word, enable the link
           if(word == right_word)
           {
-            wg.choice_links[i].onclick = wg.setup 
+              var right_link = choice_link
+              right_link.onclick = function() {
+                // Don't allow another click
+                right_link.onclick = null
+
+                // Change the class in order to change the CSS highlight
+                right_link.classList.add("chosen")
+                right_link.classList.remove("unchosen")
+
+                // Show a new challenge after a delay
+                setTimeout(wg.setup, 3000)
+              }
           }
           else
           {
-            wg.choice_links[i].onclick = null
+            choice_link.onclick = null
           }
         }
       }
