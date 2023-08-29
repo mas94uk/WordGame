@@ -59,8 +59,11 @@
         border-color: #1118;
       }
 
-      .unchosen:hover {
-        background-color: #bbb;*/
+      /* If using a mouse or stylus (not touchscreen) then shade buttons on hover */
+      @media (pointer: fine) {
+        .unchosen:hover {
+          background-color: #bbb;
+        }
       }
 
       .chosen {
@@ -68,7 +71,6 @@
         box-shadow: 0.1rem 0.1rem 0.3rem #886;
         border-color: #779;
       }
-
     </style>
   </head>
   <body>
